@@ -1,17 +1,12 @@
 package testingprod.prod;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -26,7 +21,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-public class Teststatus {
+public class TvPriceChecker {
 
 	private String mainWebsitePrice;
 	private String storeWebsitePrice;
@@ -427,6 +422,6 @@ public void tearDown(){
 
 	driver.close();
 }
-
-
+	
+	
 }
