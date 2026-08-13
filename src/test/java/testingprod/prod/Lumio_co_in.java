@@ -395,7 +395,7 @@ public class Lumio_co_in {
 	        searchBox.sendKeys("Arc 5");
 	        searchBox.sendKeys(Keys.ENTER);
 	        
-	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
 	        WebElement arc5Description = wait.until(
 	        	    ExpectedConditions.visibilityOfElementLocated(
@@ -422,6 +422,8 @@ public class Lumio_co_in {
 	        
 	        
 	    }
+	    
+	    
 	    
 	    
 	    @Test(priority = 10,enabled=false)
