@@ -15,6 +15,12 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class LumioStore {
 	
 	  public WebDriver driver;
@@ -26,7 +32,7 @@ public class LumioStore {
 	            LoggerFactory.getLogger(AppTest.class);
 
 	    @Test(priority = 1)
-	    public void TC_01_LumioStoreHomepage() {
+	    public void TC_01_LumioStoreHomepage() throws IOException, InterruptedException {
 
 	        ChromeOptions options = new ChromeOptions();
 
@@ -75,6 +81,10 @@ public class LumioStore {
 	       // Assert.assertEquals(driver.getTitle(),"Lumio Store | Buy official Lumio products online");
 	        Assert.assertTrue(driver.getTitle().contains("Lumio Store | Buy official Lumio products online"));
 
+	       
+	    
+	        
+	        
 	        log.info("TC_01_LumioStoreHomepage : PASSED");
 	        
 	        
@@ -83,32 +93,7 @@ public class LumioStore {
 	    @Test(priority = 2)
 	    public void TC_02_LumioStoreVision7_43_2026() {
 
-	        ChromeOptions options = new ChromeOptions();
-
-	      options.addArguments("--headless=new");
-	        options.addArguments("--window-size=1920,1080");
-	        options.addArguments("--disable-gpu");
-	        options.addArguments("--no-sandbox");
-	        options.addArguments("--disable-software-rasterizer");
-	        options.addArguments("--disable-blink-features=AutomationControlled");
-
-	        options.setExperimentalOption(
-	            "excludeSwitches",
-	            Arrays.asList("enable-automation")
-	        );
-
-	        options.setExperimentalOption(
-	            "useAutomationExtension",
-	            false
-	        );
-
-	        options.addArguments("--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " +
-	                "AppleWebKit/537.36 (KHTML, like Gecko) " +
-	                "Chrome/120.0.0.0 Safari/537.36");
-
-	        driver = new ChromeDriver(options);
-
-	        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	     
 
 	        driver.get("https://store.lumio.co.in/vision7-43inch-2026");
 	        
@@ -128,6 +113,8 @@ public class LumioStore {
 	        );
 	        
 	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 7 QLED TV"));
+	        
+	        
 
 	        log.info("TC_02_LumioStoreVision7_43_2026 : PASSED");
 	        
