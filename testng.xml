@@ -10,7 +10,7 @@
            
              <class name="testingprod.prod.LumioStore"/>
              
-              <class name="testingprod.prod.homepage"/>
+              <class name="testingprod.prod.Lumio_co_in"/>
           
         </classes>
 
