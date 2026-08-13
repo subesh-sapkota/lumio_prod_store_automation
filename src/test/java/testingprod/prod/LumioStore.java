@@ -27,6 +27,28 @@ public class LumioStore {
 	    WebDriverWait wait;
 	    Actions act;
 	    SoftAssert soft;
+	    
+	    
+	    
+	    public int getHttpStatusCode(String url) throws IOException, InterruptedException {
+
+	        HttpClient client = HttpClient.newHttpClient();
+
+	        HttpRequest request = HttpRequest.newBuilder()
+	                .uri(URI.create(url))
+	                .GET()
+	                .build();
+
+	        HttpResponse<Void> response = client.send(
+	                request,
+	                HttpResponse.BodyHandlers.discarding());
+
+	        log.info("URL: {}", url);
+	        log.info("HTTP Status Code: {}", response.statusCode());
+
+	        return response.statusCode();
+	    }
+	    
 	   
 	    private static final Logger log =
 	            LoggerFactory.getLogger(AppTest.class);
@@ -83,7 +105,9 @@ public class LumioStore {
 
 	       
 	    
-	        
+	        int statusCode = getHttpStatusCode("https://store.lumio.co.in/");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 	        
 	        log.info("TC_01_LumioStoreHomepage : PASSED");
 	        
@@ -91,7 +115,7 @@ public class LumioStore {
 	    }
 	
 	    @Test(priority = 2)
-	    public void TC_02_LumioStoreVision7_43_2026() {
+	    public void TC_02_LumioStoreVision7_43_2026() throws IOException, InterruptedException {
 
 	     
 
@@ -114,7 +138,9 @@ public class LumioStore {
 	        
 	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 7 QLED TV"));
 	        
-	        
+	        int statusCode = getHttpStatusCode("https://store.lumio.co.in/vision7-43inch-2026");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 	        log.info("TC_02_LumioStoreVision7_43_2026 : PASSED");
 	        
@@ -122,7 +148,7 @@ public class LumioStore {
 	    }
 	    
 	    @Test(priority = 3)
-	    public void TC_03_LumioStoreVision7_55_2026() {
+	    public void TC_03_LumioStoreVision7_55_2026() throws IOException, InterruptedException {
 
 	      
 
@@ -148,6 +174,10 @@ public class LumioStore {
 	        
 	       // Assert.assertEquals(driver.getTitle(),"Lumio Vision 7 QLED TV | Google TV by Lumio | Lumio");
 	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 7 QLED TV | Google TV by Lumio"));
+	        
+	        int statusCode = getHttpStatusCode("https://store.lumio.co.in/vision7-55inch-2026");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 	       
 
 	        log.info("TC_03_LumioStoreVision7_55_2026 : PASSED");
@@ -156,7 +186,7 @@ public class LumioStore {
 	    }
 	    
 	    @Test(priority = 4)
-	    public void TC_04_LumioStoreVision9_55() {
+	    public void TC_04_LumioStoreVision9_55() throws IOException, InterruptedException {
 
 
 	        driver.get("https://store.lumio.co.in/vision9-55inch");
@@ -182,6 +212,10 @@ public class LumioStore {
 	        log.info(driver.getTitle());
 
 	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 Mini LED TV | Flagship Google TV"));
+	        
+	        int statusCode = getHttpStatusCode("https://store.lumio.co.in/vision9-55inch");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 	        
 	        log.info("TC_04_LumioStoreVision9_55 : PASSED");
@@ -192,10 +226,10 @@ public class LumioStore {
 	    
 	    
 	    @Test(priority = 5)
-	    public void TC_05_LumioStoreVision9_55_2026() {
+	    public void TC_05_LumioStoreVision9_55_2026() throws IOException, InterruptedException {
 
 	       
-	        driver.get("https://store.lumio.co.in/vision9-65inch-2026");
+	        driver.get("https://store.lumio.co.in/vision9-55inch-2026");
 	        
 
 	        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -218,7 +252,9 @@ public class LumioStore {
 	        log.info(driver.getTitle());
 	        
 	      //  Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 Mini LED TV | Flagship Google TV"));
+	        int statusCode = getHttpStatusCode("https://store.lumio.co.in/vision9-55inch-2026");
 
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 	        log.info("TC_05_LumioStoreVision9_55 : PASSED");
 	        
@@ -227,7 +263,7 @@ public class LumioStore {
 	    
 	    
 	    @Test(priority = 5)
-	    public void TC_06_LumioStoreVision9_65() {
+	    public void TC_06_LumioStoreVision9_65() throws IOException, InterruptedException {
 
 	        driver.get("https://store.lumio.co.in/vision9-65inch-2026");
 	        
@@ -250,6 +286,10 @@ public class LumioStore {
 	        
 	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 65-inch 2026 4K MiniLED Google TV"));
 	     
+	        int statusCode = getHttpStatusCode("https://store.lumio.co.in/vision9-65inch-2026");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
+	        
 
 	        log.info("TC_06_LumioStoreVision9_65 : PASSED");
 	        
@@ -258,7 +298,7 @@ public class LumioStore {
 	    
 	    
 	    @Test(priority = 6)
-	    public void TC_07_LumioStoreArc5() {
+	    public void TC_07_LumioStoreArc5() throws IOException, InterruptedException {
 	    	
 	    	 driver.get("https://store.lumio.co.in/arc5");
 		        
@@ -280,6 +320,10 @@ public class LumioStore {
 		      //  Assert.assertEquals(driver.getTitle(),"Lumio Vision 9 65-inch 2026 4K MiniLED Google TV | Lumio");
 		        
 		        Assert.assertTrue(driver.getTitle().contains("Lumio Arc 5 Google TV Projector"));
+		        
+		        int statusCode = getHttpStatusCode("https://store.lumio.co.in/arc5");
+
+		        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 
 		        log.info("TC_07_LumioStoreArc5 : PASSED");
@@ -288,7 +332,7 @@ public class LumioStore {
 	    }
 	    
 	    @Test(priority = 7)
-	    public void TC_08_LumioStoreArc7() {
+	    public void TC_08_LumioStoreArc7() throws IOException, InterruptedException {
 	    	
 	    	
 	    	 driver.get("https://store.lumio.co.in/arc7");
@@ -311,6 +355,10 @@ public class LumioStore {
 		      //  Assert.assertEquals(driver.getTitle(),"Lumio Vision 9 65-inch 2026 4K MiniLED Google TV | Lumio");
 		        
 		        Assert.assertTrue(driver.getTitle().contains("Lumio Arc 7 Google TV Projector"));
+		        
+		        int statusCode = getHttpStatusCode("https://store.lumio.co.in/arc7");
+
+		        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 
 		        log.info("TC_08_LumioStoreArc7 : PASSED");

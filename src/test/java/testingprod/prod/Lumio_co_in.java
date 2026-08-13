@@ -21,6 +21,12 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class Lumio_co_in {
 
 	  public WebDriver driver;
@@ -30,9 +36,29 @@ public class Lumio_co_in {
 	   
 	    private static final Logger log =
 	            LoggerFactory.getLogger(AppTest.class);
+	    
+	    public int getHttpStatusCode(String url) throws IOException, InterruptedException {
+
+	        HttpClient client = HttpClient.newHttpClient();
+
+	        HttpRequest request = HttpRequest.newBuilder()
+	                .uri(URI.create(url))
+	                .GET()
+	                .build();
+
+	        HttpResponse<Void> response = client.send(
+	                request,
+	                HttpResponse.BodyHandlers.discarding());
+
+	        log.info("URL: {}", url);
+	        log.info("HTTP Status Code: {}", response.statusCode());
+
+	        return response.statusCode();
+	    }
+	    
 
 	    @Test(priority = 1)
-	    public void TC_01_LumioHomepage() {
+	    public void TC_01_LumioHomepage() throws IOException, InterruptedException {
 
 	        ChromeOptions options = new ChromeOptions();
 
@@ -79,6 +105,10 @@ public class Lumio_co_in {
 	        );
 	        
 	        Assert.assertEquals(driver.getTitle(),"Lumio");
+	        
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 	        log.info("TC_01_Homepage lumio.com : PASSED");
 	        
@@ -86,7 +116,7 @@ public class Lumio_co_in {
 	    }
 	    
 	    @Test(priority = 2)
-	    public void TC_02_vision9_2026() {
+	    public void TC_02_vision9_2026() throws IOException, InterruptedException {
 
 	       
 
@@ -109,6 +139,10 @@ public class Lumio_co_in {
 
 	        Assert.assertEquals(driver.getTitle(),"Lumio Vision 9 2026");
 	        
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/vision9-2026");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
+	        
 	        log.info("TC_02_vision9_2026 : PASSED");
 	        
 	        
@@ -117,7 +151,7 @@ public class Lumio_co_in {
 	    
 	    
 	    @Test(priority = 3)
-	    public void TC_03_vision7_2026() {
+	    public void TC_03_vision7_2026() throws IOException, InterruptedException {
 
 	       
 
@@ -141,6 +175,11 @@ public class Lumio_co_in {
 	        
 	        Assert.assertEquals(driver.getTitle(),"Lumio Vision 7 2026");
 	        
+	        
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/vision7-2026");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
+	        
 	        log.info("TC_03_vision7_2026 : PASSED");
 	        
 	        
@@ -149,7 +188,7 @@ public class Lumio_co_in {
 	    
 	    
 	    @Test(priority = 4)
-	    public void TC_04_vision7() {
+	    public void TC_04_vision7() throws IOException, InterruptedException {
 
 	       
 
@@ -172,6 +211,11 @@ public class Lumio_co_in {
 
 	        Assert.assertEquals(driver.getTitle(),"Lumio Vision 7");
 	        
+	        
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/vision7");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
+	        
 	        log.info("TC_04_vision 7 : PASSED");
 	        
 	        
@@ -181,7 +225,7 @@ public class Lumio_co_in {
 	    
 	    
 	    @Test(priority = 5)
-	    public void TC_05_arc5() {
+	    public void TC_05_arc5() throws IOException, InterruptedException {
 
 	       
 
@@ -203,6 +247,11 @@ public class Lumio_co_in {
 	        );
 	        
 	        Assert.assertEquals(driver.getTitle(),"Lumio Arc 5");
+	        
+	        
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/arc5");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 	        log.info("TC_05_arc5 : PASSED");
 	        
@@ -212,7 +261,7 @@ public class Lumio_co_in {
 	    
 	    
 	    @Test(priority = 6)
-	    public void TC_06_arc7() {
+	    public void TC_06_arc7() throws IOException, InterruptedException {
 
 	       
 
@@ -235,6 +284,10 @@ public class Lumio_co_in {
 
 	        Assert.assertEquals(driver.getTitle(),"Lumio Arc 7");
 	        
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/arc7");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
+	        
 	        log.info("TC_06_arc7 : PASSED");
 	        
 	        
@@ -242,7 +295,7 @@ public class Lumio_co_in {
 	    
 	    
 	    @Test(priority = 7)
-	    public void TC_07_tldr() {
+	    public void TC_07_tldr() throws IOException, InterruptedException {
 
 	       
 
@@ -264,7 +317,12 @@ public class Lumio_co_in {
 	        );
 	        
 	        Assert.assertEquals(driver.getTitle(),"TLDR");
+	        
+	      
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/tldr");
 
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
+	        
 	        log.info("TC_07_tldr : PASSED");
 	        
 	        
@@ -272,7 +330,7 @@ public class Lumio_co_in {
 	    
 	    
 	    @Test(priority = 8)
-	    public void TC_08_about() {
+	    public void TC_08_about() throws IOException, InterruptedException {
 
 	       
 
@@ -294,6 +352,10 @@ public class Lumio_co_in {
 	        );
 	        
 	        Assert.assertEquals(driver.getTitle(),"Lumio");
+	        
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/about");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 	        log.info("TC_08_about : PASSED");
 	        
@@ -303,7 +365,7 @@ public class Lumio_co_in {
 	    
 	    
 	    @Test(priority = 9)
-	    public void TC_09_support() {
+	    public void TC_09_support() throws IOException, InterruptedException {
 
 	       
 
@@ -351,7 +413,9 @@ public class Lumio_co_in {
 	        );
 	        	
 	        	
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/support");
 
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 	        	
 
 	        	log.info("TC_09_support : PASSED");
@@ -428,7 +492,7 @@ public class Lumio_co_in {
 	    
 	    @Test(priority = 11)
 	    
-	    public void TC_10_installation_Request()
+	    public void TC_10_installation_Request() throws IOException, InterruptedException
 	    {
 	    
       driver.get("https://forms.lumio.co.in/s/qgx2ee63vqg0jo2e4r2kt7s9");
@@ -449,6 +513,10 @@ public class Lumio_co_in {
 	        );
 	        
 	        Assert.assertEquals(driver.getTitle(),"Welcome! | Formbricks");
+	        
+	        int statusCode = getHttpStatusCode("https://forms.lumio.co.in/s/qgx2ee63vqg0jo2e4r2kt7s9");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 	        log.info("TC_10_installation_Request : PASSED");
 	    	
@@ -460,7 +528,7 @@ public class Lumio_co_in {
 	    
 	    @Test(priority = 11)
 	    
-	    public void TC_11_registration()
+	    public void TC_11_registration() throws IOException, InterruptedException
 	    {
 	    
       driver.get("https://lumio.co.in/registration");
@@ -481,6 +549,10 @@ public class Lumio_co_in {
 	        );
 	        
 	        Assert.assertEquals(driver.getTitle(),"Register Your Lumio Product");
+	        
+	        int statusCode = getHttpStatusCode("https://lumio.co.in/registration");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
 
 	        log.info("TC_11_registration : PASSED");
 	    	
