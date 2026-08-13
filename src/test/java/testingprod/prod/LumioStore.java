@@ -143,8 +143,12 @@ public class LumioStore {
 	            "Expected URL to contain store.lumio.co.in but was: " + currentUrl
 	        );
 	        
+	        
+	        log.info(driver.getTitle());
+	        
 	       // Assert.assertEquals(driver.getTitle(),"Lumio Vision 7 QLED TV | Google TV by Lumio | Lumio");
-	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 7 QLED TV | Google TV by Lumio "));
+	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 7 QLED TV | Google TV by Lumio"));
+	       
 
 	        log.info("TC_03_LumioStoreVision7_55_2026 : PASSED");
 	        
@@ -172,9 +176,12 @@ public class LumioStore {
 	            "Expected URL to contain store.lumio.co.in but was: " + currentUrl
 	        );
 	        
-	     //   Assert.assertEquals(driver.getTitle(),"Lumio Vision 9 Mini LED TV | Flagship Google TV | Lumio");
+	     //   Assert.assertEquals(driver.getTitle(),"Lumio Vision 9 Mini LED TV | Flagship Google TV | Lumio");\
+	        
+	        
+	        log.info(driver.getTitle());
 
-	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 Mini LED TV | Flagship Google TV "));
+	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 Mini LED TV | Flagship Google TV"));
 
 	        
 	        log.info("TC_04_LumioStoreVision9_55 : PASSED");
@@ -207,7 +214,10 @@ public class LumioStore {
 	        
 	      //  Assert.assertEquals(driver.getTitle(),"Lumio Vision 9 Mini LED TV | Flagship Google TV");
 	        
-	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 Mini LED TV | Flagship Google TV "));
+	        
+	        log.info(driver.getTitle());
+	        
+	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 Mini LED TV | Flagship Google TV"));
 
 
 	        log.info("TC_05_LumioStoreVision9_55 : PASSED");
