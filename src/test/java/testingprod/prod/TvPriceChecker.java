@@ -98,7 +98,7 @@ public class TvPriceChecker {
 	    
 
 @Test(priority = 2,enabled=true)
-public void TC_09_getPriceMainWebsiteVision9() throws IOException, InterruptedException {
+public void TC_02_getPriceMainWebsiteVision9() throws IOException, InterruptedException {
 
     driver.get("https://lumio.co.in/vision9-2026");
 
@@ -263,7 +263,7 @@ public void TC_09_getPriceMainWebsiteVision9() throws IOException, InterruptedEx
 	
 
 @Test(priority = 3,enabled=true)
-public void TC_09_getPriceLumioStoreVision9_55() {
+public void TC_03_getPriceLumioStoreVision9_55() {
 
     driver.get("https://store.lumio.co.in/vision9-55inch");
 
@@ -291,7 +291,7 @@ public void TC_09_getPriceLumioStoreVision9_55() {
 
 
 @Test(priority = 7,enabled=true)
-public void TC_09_getPriceLumioStoreVision9_55_2026() {
+public void TC_04_getPriceLumioStoreVision9_55_2026() {
 
     driver.get("https://store.lumio.co.in/vision9-55inch-2026");
 
@@ -319,7 +319,7 @@ public void TC_09_getPriceLumioStoreVision9_55_2026() {
 
 
 @Test(priority = 4)
-public void TC_09_comparePriceLumioStoreVision9_55()
+public void TC_05_comparePriceLumioStoreVision9_55()
 {
 	
 	int mainPrice = Integer.parseInt(
@@ -343,7 +343,7 @@ public void TC_09_comparePriceLumioStoreVision9_55()
 
 
 @Test(priority = 5,enabled=true)
-public void TC_09_getPriceLumioStoreVision9_65() {
+public void TC_06_getPriceLumioStoreVision9_65() {
 
     driver.get("https://store.lumio.co.in/vision9-65inch-2026");
 
@@ -371,7 +371,7 @@ public void TC_09_getPriceLumioStoreVision9_65() {
 
 
 @Test(priority = 6)
-public void TC_09_comparePriceLumioStoreVision9_65()
+public void TC_07_comparePriceLumioStoreVision9_65()
 {
 	
 	int mainPrice = Integer.parseInt(
@@ -393,7 +393,7 @@ public void TC_09_comparePriceLumioStoreVision9_65()
 
 
 @Test(priority = 8)
-public void TC_09_comparePriceLumioStoreVision9_55_2026()
+public void TC_08_comparePriceLumioStoreVision9_55_2026()
 {
 	
 	int mainPrice = Integer.parseInt(
