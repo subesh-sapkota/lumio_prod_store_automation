@@ -313,7 +313,7 @@ public class LumioStore {
 		        Assert.assertTrue(driver.getTitle().contains("Lumio Arc 7 Google TV Projector"));
 
 
-		        log.info("TC_07_LumioStoreArc5 : PASSED");
+		        log.info("TC_08_LumioStoreArc7 : PASSED");
 	    	
 	    }
 	    
