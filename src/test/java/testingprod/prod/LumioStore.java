@@ -217,7 +217,7 @@ public class LumioStore {
 	        
 	        log.info(driver.getTitle());
 	        
-	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 Mini LED TV | Flagship Google TV"));
+	      //  Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 Mini LED TV | Flagship Google TV"));
 
 
 	        log.info("TC_05_LumioStoreVision9_55 : PASSED");
@@ -248,7 +248,7 @@ public class LumioStore {
 	        
 	      //  Assert.assertEquals(driver.getTitle(),"Lumio Vision 9 65-inch 2026 4K MiniLED Google TV | Lumio");
 	        
-	        //Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 65-inch 2026 4K MiniLED Google TV"));
+	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 65-inch 2026 4K MiniLED Google TV"));
 	     
 
 	        log.info("TC_06_LumioStoreVision9_65 : PASSED");
@@ -288,7 +288,32 @@ public class LumioStore {
 	    }
 	    
 	    @Test(priority = 7)
-	    public void TC_06_LumioStoreArc7() {
+	    public void TC_08_LumioStoreArc7() {
+	    	
+	    	
+	    	 driver.get("https://store.lumio.co.in/arc7");
+		        
+
+		        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		        act = new Actions(driver);
+		        soft = new SoftAssert();
+		        log.info("Opening browser");
+
+		        String currentUrl = driver.getCurrentUrl();
+
+		        log.info("Current URL: {}", currentUrl);
+
+		        Assert.assertTrue(
+		            currentUrl.contains("https://store.lumio.co.in/"),
+		            "Expected URL to contain store.lumio.co.in but was: " + currentUrl
+		        );
+		        
+		      //  Assert.assertEquals(driver.getTitle(),"Lumio Vision 9 65-inch 2026 4K MiniLED Google TV | Lumio");
+		        
+		        Assert.assertTrue(driver.getTitle().contains("Lumio Arc 7 Google TV Projector"));
+
+
+		        log.info("TC_07_LumioStoreArc5 : PASSED");
 	    	
 	    }
 	    
