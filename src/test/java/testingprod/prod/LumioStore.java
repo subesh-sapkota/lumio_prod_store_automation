@@ -248,8 +248,8 @@ public class LumioStore {
 	        
 	      //  Assert.assertEquals(driver.getTitle(),"Lumio Vision 9 65-inch 2026 4K MiniLED Google TV | Lumio");
 	        
-	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 65-inch 2026 4K MiniLED Google TV "));
-
+	        Assert.assertTrue(driver.getTitle().contains("Lumio Vision 9 65-inch 2026 4K MiniLED Google TV"));
+	     
 
 	        log.info("TC_06_LumioStoreVision9_65 : PASSED");
 	        
