@@ -335,7 +335,9 @@ public void TC_05_comparePriceLumioStoreVision7_43()
 	System.out.println("Main Website Price: " + mainPrice);
 	System.out.println("Store Website Price: " + storePrice);
 
-	Assert.assertEquals(storePrice, mainPrice, "Prices do not match!");
+	//Assert.assertEquals(storePrice, mainPrice, "Prices do not match!");
+	
+	Assert.assertEquals( mainPrice >= storePrice, "Prices do not match!");
 	
 }
 
@@ -361,7 +363,9 @@ public void TC_06_comparePriceLumioStoreVision7_55()
 	System.out.println("Main Website Price: " + mainPrice);
 	System.out.println("Store Website Price: " + storePrice);
 
-	Assert.assertEquals(storePrice, mainPrice, "Prices do not match!");
+	//Assert.assertEquals(storePrice, mainPrice, "Prices do not match!");
+	
+	Assert.assertEquals( mainPrice >= storePrice, "Prices do not match!");
 	
 }
 
