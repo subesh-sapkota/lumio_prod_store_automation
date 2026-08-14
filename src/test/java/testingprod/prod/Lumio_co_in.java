@@ -370,62 +370,49 @@ public class Lumio_co_in {
 	        driver.get("https://lumio.co.in/support");
 
 	        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-	        act = new Actions(driver);
-	        soft = new SoftAssert();
 
 	        log.info("Opening Support page");
 
-	        String currentUrl = driver.getCurrentUrl();
-
-	        log.info("Current URL: {}", currentUrl);
-
 	        Assert.assertTrue(
-	            currentUrl.contains("lumio.co.in/support"),
-	            "Expected URL to contain lumio.co.in/support but was: " + currentUrl
+	            driver.getCurrentUrl().contains("lumio.co.in/support"),
+	            "Incorrect Support page URL"
 	        );
 
 	        Assert.assertEquals(driver.getTitle(), "Support");
 
-	        // Wait for search box
-	        WebElement searchBox = wait.until(
-	            ExpectedConditions.elementToBeClickable(
-	                By.xpath("//input[@placeholder='Search products, warranty, services and more']")
-	            )
+	        By searchBoxLocator = By.xpath(
+	            "//input[@placeholder='Search products, warranty, services and more']"
 	        );
 
-	        // Scroll search box into view
+	        // Wait for a fresh clickable element
+	        WebElement searchBox = wait.until(
+	            ExpectedConditions.elementToBeClickable(searchBoxLocator)
+	        );
+
+	        // Scroll using JavaScript
 	        ((JavascriptExecutor) driver).executeScript(
-	            "arguments[0].scrollIntoView({block: 'center'});",
+	            "arguments[0].scrollIntoView({block:'center'});",
 	            searchBox
 	        );
 
-	        Thread.sleep(1000);
+	        // Find again after scroll because React/Next may re-render
+	        searchBox = wait.until(
+	            ExpectedConditions.elementToBeClickable(searchBoxLocator)
+	        );
 
+	        // Click and type immediately
 	        searchBox.click();
 	        searchBox.sendKeys("Arc 5");
 
-	        Thread.sleep(1000);
-
-	        searchBox.sendKeys(Keys.ENTER);
-
 	        log.info("Searching for Arc 5");
 
-	        // Wait for page result to contain Arc 5
+	        // Wait for search result
+	        By arc5Locator = By.xpath(
+	            "//*[contains(normalize-space(), 'Arc 5')]"
+	        );
+
 	        WebElement arc5Description = wait.until(
-	            ExpectedConditions.presenceOfElementLocated(
-	                By.xpath("//*[contains(normalize-space(), 'Arc 5')]")
-	            )
-	        );
-
-	        // Scroll result into view
-	        ((JavascriptExecutor) driver).executeScript(
-	            "arguments[0].scrollIntoView({block: 'center'});",
-	            arc5Description
-	        );
-
-	        // Wait until visible
-	        wait.until(
-	            ExpectedConditions.visibilityOf(arc5Description)
+	            ExpectedConditions.visibilityOfElementLocated(arc5Locator)
 	        );
 
 	        String answer = arc5Description.getText();
@@ -434,12 +421,14 @@ public class Lumio_co_in {
 	        System.out.println("Answer: " + answer);
 	        System.out.println("==============================");
 
-	        Assert.assertTrue(
-	            answer != null && !answer.trim().isEmpty(),
+	        Assert.assertFalse(
+	            answer.trim().isEmpty(),
 	            "Answer should not be empty"
 	        );
 
-	        int statusCode = getHttpStatusCode("https://lumio.co.in/support");
+	        int statusCode = getHttpStatusCode(
+	            "https://lumio.co.in/support"
+	        );
 
 	        Assert.assertEquals(
 	            statusCode,
@@ -449,7 +438,6 @@ public class Lumio_co_in {
 
 	        log.info("TC_09_support : PASSED");
 	    }
-	    
 	    
 	    
 	    
