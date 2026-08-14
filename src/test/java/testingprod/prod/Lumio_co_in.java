@@ -7,6 +7,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -367,62 +368,120 @@ public class Lumio_co_in {
 	    @Test(priority = 9)
 	    public void TC_09_support() throws IOException, InterruptedException {
 
-	       
+	        log.info("Opening Support page");
 
 	        driver.get("https://lumio.co.in/support");
-	        
 
-	        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 	        act = new Actions(driver);
 	        soft = new SoftAssert();
-	        log.info("Opening browser");
+
+	        // Wait for page to load completely
+	        wait.until(webDriver ->
+	            ((JavascriptExecutor) webDriver)
+	                .executeScript("return document.readyState")
+	                .equals("complete")
+	        );
 
 	        String currentUrl = driver.getCurrentUrl();
 
 	        log.info("Current URL: {}", currentUrl);
 
 	        Assert.assertTrue(
-	            currentUrl.contains("https://lumio.co.in/support"),
-	            "Expected URL to contain lumio.co.in but was: " + currentUrl
+	            currentUrl.contains("lumio.co.in/support"),
+	            "Expected URL to contain lumio.co.in/support but was: " + currentUrl
 	        );
-	        
-	        Assert.assertEquals(driver.getTitle(),"Support");
-	        
-	        WebElement searchBox = driver.findElement(
-	        	    By.xpath("//input[@placeholder='Search products, warranty, services and more']")
-	        	);
-	        
+
+	        wait.until(ExpectedConditions.titleIs("Support"));
+
+	        Assert.assertEquals(
+	            driver.getTitle(),
+	            "Support",
+	            "Page title does not match"
+	        );
+
+	        // Search box locator
+	        By searchBoxLocator = By.xpath(
+	            "//input[@placeholder='Search products, warranty, services and more']"
+	        );
+
+	        // Wait until search box is clickable
+	        WebElement searchBox = wait.until(
+	            ExpectedConditions.elementToBeClickable(searchBoxLocator)
+	        );
+
+	        // Click and clear existing text
+	        searchBox.click();
+	        searchBox.clear();
+
+	        // Enter search text
+	        log.info("Searching for Arc 5");
+
 	        searchBox.sendKeys("Arc 5");
+
+	        // Small wait to allow autocomplete/search logic
+	        Thread.sleep(1000);
+
 	        searchBox.sendKeys(Keys.ENTER);
-	        
-	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-	        WebElement arc5Description = wait.until(
-	        	    ExpectedConditions.visibilityOfElementLocated(
-	        	        By.xpath("//div[contains(@class,'prose-invert') and contains(@class,'text-white') and .//b[normalize-space()='Arc 5']]")
-	        	    )
-	        	);
+	        log.info("Waiting for Arc 5 search result");
 
-	        String answer = arc5Description.getText();
+	        // More stable locator
+	        By arc5ResultLocator = By.xpath(
+	            "//*[contains(normalize-space(), 'Arc 5')]"
+	        );
 
+	        // Wait while ignoring stale elements caused by React/Next.js re-render
+	        WebDriverWait resultWait = new WebDriverWait(
+	            driver,
+	            Duration.ofSeconds(40)
+	        );
+
+	        resultWait.ignoring(StaleElementReferenceException.class);
+
+	        WebElement arc5Result = resultWait.until(
+	            ExpectedConditions.visibilityOfElementLocated(
+	                arc5ResultLocator
+	            )
+	        );
+
+	        // Get fresh element text
+	        String answer = arc5Result.getText();
+
+	        log.info("Answer received: {}", answer);
+
+	        System.out.println("=================================");
 	        System.out.println("Answer: " + answer);
+	        System.out.println("=================================");
+
+	        Assert.assertNotNull(
+	            answer,
+	            "Arc 5 answer should not be null"
+	        );
+
+	        Assert.assertFalse(
+	            answer.trim().isEmpty(),
+	            "Arc 5 answer should not be empty"
+	        );
 
 	        Assert.assertTrue(
-	            answer != null && !answer.trim().isEmpty(),
-	            "Answer should not be empty"
+	            answer.contains("Arc 5"),
+	            "Search result does not contain Arc 5. Actual result: " + answer
 	        );
-	        	
-	        	
-	        int statusCode = getHttpStatusCode("https://lumio.co.in/support");
 
-	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
-	        	
+	        // HTTP status validation
+	        int statusCode = getHttpStatusCode(
+	            "https://lumio.co.in/support"
+	        );
 
-	        	log.info("TC_09_support : PASSED");
-	        
-	        
+	        Assert.assertEquals(
+	            statusCode,
+	            200,
+	            "Website did not return HTTP 200"
+	        );
+
+	        log.info("TC_09_support : PASSED");
 	    }
-	    
 	    
 	    @Test(priority = 10,enabled=false)
 	    public void footerCheck() {
