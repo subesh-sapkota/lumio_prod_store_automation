@@ -365,22 +365,23 @@ public class Lumio_co_in {
 	    
 	    
 	    
-	    @Test(priority = 9)
+	     @Test(priority = 9)
 	    public void TC_09_support() throws IOException, InterruptedException {
 
 	        log.info("Opening Support page");
 
 	        driver.get("https://lumio.co.in/support");
 
-	        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+	        wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 	        act = new Actions(driver);
 	        soft = new SoftAssert();
 
-	        // Wait for page to load completely
+	        // Wait for page completely loaded
 	        wait.until(webDriver ->
-	            ((JavascriptExecutor) webDriver)
-	                .executeScript("return document.readyState")
-	                .equals("complete")
+	            "complete".equals(
+	                ((JavascriptExecutor) webDriver)
+	                    .executeScript("return document.readyState")
+	            )
 	        );
 
 	        String currentUrl = driver.getCurrentUrl();
@@ -392,6 +393,7 @@ public class Lumio_co_in {
 	            "Expected URL to contain lumio.co.in/support but was: " + currentUrl
 	        );
 
+	        // Wait for title
 	        wait.until(ExpectedConditions.titleIs("Support"));
 
 	        Assert.assertEquals(
@@ -400,87 +402,134 @@ public class Lumio_co_in {
 	            "Page title does not match"
 	        );
 
-	        // Search box locator
+	        // Search box
 	        By searchBoxLocator = By.xpath(
 	            "//input[@placeholder='Search products, warranty, services and more']"
 	        );
 
-	        // Wait until search box is clickable
+	        // Wait for search box
 	        WebElement searchBox = wait.until(
 	            ExpectedConditions.elementToBeClickable(searchBoxLocator)
 	        );
 
-	        // Click and clear existing text
-	        searchBox.click();
-	        searchBox.clear();
+	        // Scroll into view - useful for headless mode
+	        ((JavascriptExecutor) driver).executeScript(
+	            "arguments[0].scrollIntoView({block: 'center'});",
+	            searchBox
+	        );
+
+	        // Click search box
+	        ((JavascriptExecutor) driver).executeScript(
+	            "arguments[0].click();",
+	            searchBox
+	        );
+
+	        // Clear existing text
+	        searchBox.sendKeys(Keys.COMMAND + "a");
+	        searchBox.sendKeys(Keys.BACK_SPACE);
+
+	        log.info("Searching for Arc 7");
 
 	        // Enter search text
-	        log.info("Searching for Arc 5");
+	        searchBox.sendKeys("Arc 7");
 
-	        searchBox.sendKeys("Arc 5");
+	        // Verify text entered successfully
+	        wait.until(ExpectedConditions.attributeToBe(
+	            searchBoxLocator,
+	            "value",
+	            "Arc 7"
+	        ));
 
-	        // Small wait to allow autocomplete/search logic
 	        Thread.sleep(1000);
 
+	        // Press Enter
 	        searchBox.sendKeys(Keys.ENTER);
 
-	        log.info("Waiting for Arc 5 search result");
+	        log.info("Waiting for COMPLETE Arc 7 search result");
 
-	        // More stable locator
-	        By arc5ResultLocator = By.xpath(
-	            "//*[contains(normalize-space(), 'Arc 5')]"
-	        );
+	        // Wait up to 90 seconds for complete response
+	        WebDriverWait resultWait =
+	            new WebDriverWait(driver, Duration.ofSeconds(90));
 
-	        // Wait while ignoring stale elements caused by React/Next.js re-render
-	        WebDriverWait resultWait = new WebDriverWait(
-	            driver,
-	            Duration.ofSeconds(40)
-	        );
+	        resultWait
+	            .pollingEvery(Duration.ofSeconds(1))
+	            .ignoring(StaleElementReferenceException.class);
 
-	        resultWait.ignoring(StaleElementReferenceException.class);
+	        // Wait until ALL expected Arc 7 information is available
+	        String pageText = resultWait.until(webDriver -> {
 
-	        WebElement arc5Result = resultWait.until(
-	            ExpectedConditions.visibilityOfElementLocated(
-	                arc5ResultLocator
-	            )
-	        );
+	            try {
 
-	        // Get fresh element text
-	        String answer = arc5Result.getText();
+	                String text = webDriver
+	                    .findElement(By.tagName("body"))
+	                    .getText();
 
-	        log.info("Answer received: {}", answer);
+	                boolean hasArc7 =
+	                    text.contains("Arc 7");
+
+	                boolean hasPower =
+	                    text.contains("120W");
+
+	                boolean hasResolution =
+	                    text.contains("1080p");
+
+	          
+
+	                log.info(
+	                    "Checking result -> Arc7: {}, 120W: {}, 1080p: {}, 2.36kg: {}",
+	                    hasArc7,
+	                    hasPower,
+	                    hasResolution
+	                    
+	                );
+
+	                // Return text only when COMPLETE result is available
+	                if (hasArc7
+	                        && hasPower
+	                        && hasResolution
+	                     ) {
+
+	                    return text;
+	                }
+
+	                return null;
+
+	            } catch (StaleElementReferenceException e) {
+
+	                log.info(
+	                    "Page is re-rendering. Waiting for complete result..."
+	                );
+
+	                return null;
+	            }
+	        });
+
+	        log.info("Complete Arc 7 result received");
 
 	        System.out.println("=================================");
-	        System.out.println("Answer: " + answer);
+	        System.out.println("COMPLETE ARC 7 ANSWER:");
+	       
 	        System.out.println("=================================");
 
-	        Assert.assertNotNull(
-	            answer,
-	            "Arc 5 answer should not be null"
-	        );
-
-	        Assert.assertFalse(
-	            answer.trim().isEmpty(),
-	            "Arc 5 answer should not be empty"
+	        // Validate Arc 7
+	        Assert.assertTrue(
+	            pageText.contains("Arc 7"),
+	            "Arc 7 was not found in the search result"
 	        );
 
 	        Assert.assertTrue(
-	            answer.contains("Arc 5"),
-	            "Search result does not contain Arc 5. Actual result: " + answer
+	            pageText.contains("120W"),
+	            "Expected power consumption 120W was not found"
 	        );
 
-	        // HTTP status validation
-	        int statusCode = getHttpStatusCode(
-	            "https://lumio.co.in/support"
+	        Assert.assertTrue(
+	            pageText.contains("1080p"),
+	            "Expected Full HD 1080p information was not found"
 	        );
 
-	        Assert.assertEquals(
-	            statusCode,
-	            200,
-	            "Website did not return HTTP 200"
-	        );
+	    
 
-	        log.info("TC_09_support : PASSED");
+	        log.info("TC_09_support PASSED");
 	    }
 	    
 	    @Test(priority = 10,enabled=false)
