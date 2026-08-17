@@ -528,6 +528,47 @@ public class Lumio_co_in {
 	        );
 
 	    
+	        
+	        String url = "https://api-support-bot.dev.chouseservice.com/ask";
+
+	        String requestBody = """
+	                {
+	                    "question": "arc 7"
+	                }
+	                """;
+
+	        HttpClient client = HttpClient.newHttpClient();
+
+	        HttpRequest request = HttpRequest.newBuilder()
+	                .uri(URI.create(url))
+	                .header("Accept", "*/*")
+	                .header("Accept-Language", "en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7")
+	                .header("Content-Type", "application/json")
+	                .header("Origin", "https://lumio.co.in")
+	                .header("Referer", "https://lumio.co.in/")
+	                .header("User-Agent",
+	                        "Mozilla/5.0 (iPad; CPU OS 18_5 like Mac OS X) "
+	                        + "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+	                        + "Version/18.5 Mobile/15E148 Safari/604.1")
+	                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                .build();
+
+	        HttpResponse<String> response = client.send(
+	                request,
+	                HttpResponse.BodyHandlers.ofString()
+	        );
+
+	        System.out.println("Status Code: " + response.statusCode());
+	        System.out.println("Response:");
+	        System.out.println(response.body());
+
+	        Assert.assertEquals(
+	                response.statusCode(),
+	                200,
+	                "API returned unexpected status code"
+	        );
+	        
+	        
 
 	        log.info("TC_09_support PASSED");
 	    }
