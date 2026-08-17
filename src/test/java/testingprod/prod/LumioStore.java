@@ -32,21 +32,77 @@ public class LumioStore {
 	    
 	    public int getHttpStatusCode(String url) throws IOException, InterruptedException {
 
-	        HttpClient client = HttpClient.newHttpClient();
-
-	        HttpRequest request = HttpRequest.newBuilder()
-	                .uri(URI.create(url))
-	                .GET()
+	        HttpClient client = HttpClient.newBuilder()
+	                .connectTimeout(Duration.ofSeconds(15))
 	                .build();
 
-	        HttpResponse<Void> response = client.send(
-	                request,
-	                HttpResponse.BodyHandlers.discarding());
+	        int maxAttempts = 3;
+	        int statusCode = -1;
 
-	        log.info("URL: {}", url);
-	        log.info("HTTP Status Code: {}", response.statusCode());
+	        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
 
-	        return response.statusCode();
+	            try {
+	                HttpRequest request = HttpRequest.newBuilder()
+	                        .uri(URI.create(url))
+	                        .timeout(Duration.ofSeconds(30))
+	                        .GET()
+	                        .build();
+
+	                HttpResponse<Void> response = client.send(
+	                        request,
+	                        HttpResponse.BodyHandlers.discarding()
+	                );
+
+	                statusCode = response.statusCode();
+
+	                log.info(
+	                    "Attempt {}/{} | URL: {} | HTTP Status Code: {}",
+	                    attempt,
+	                    maxAttempts,
+	                    url,
+	                    statusCode
+	                );
+
+	                // Success
+	                if (statusCode == 200) {
+	                    return statusCode;
+	                }
+
+	                // Retry only temporary server errors
+	                if (statusCode != 502 &&
+	                    statusCode != 503 &&
+	                    statusCode != 504) {
+
+	                    return statusCode;
+	                }
+
+	                if (attempt < maxAttempts) {
+	                    log.warn(
+	                        "Temporary server error {}. Retrying in 5 seconds...",
+	                        statusCode
+	                    );
+
+	                    Thread.sleep(5000);
+	                }
+
+	            } catch (IOException e) {
+
+	                log.warn(
+	                    "Attempt {}/{} failed: {}",
+	                    attempt,
+	                    maxAttempts,
+	                    e.getMessage()
+	                );
+
+	                if (attempt < maxAttempts) {
+	                    Thread.sleep(5000);
+	                } else {
+	                    throw e;
+	                }
+	            }
+	        }
+
+	        return statusCode;
 	    }
 	    
 	   

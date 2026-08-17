@@ -287,7 +287,7 @@ public void TC_04_getPriceLumioStoreArc7() {
 }
 
 
-@Test(priority = 6,enabled=false)
+@Test(priority = 6)
 public void TC_05_comparePriceLumioStoreArc5()
 {
 	
@@ -311,7 +311,7 @@ public void TC_05_comparePriceLumioStoreArc5()
 
 
 
-@Test(priority = 7,enabled=false)
+@Test(priority = 7)
 public void TC_07_comparePriceLumioStoreArc7()
 {
 	
