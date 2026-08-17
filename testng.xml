@@ -12,7 +12,7 @@
                  <class name="testingprod.prod.LumioStore"/>
                   <class name="testingprod.prod.TvPriceChecker"/>
                   <class name="testingprod.prod.TvPriceCheckerVision7_2026"/>
-                  
+                    <class name="testingprod.prod.CheckArcPrice"/>
                   
                   
                   
