@@ -641,6 +641,41 @@ public class Lumio_co_in {
 	    
 	    
 	    
+    @Test(priority = 12)
+	    
+	    public void TC_12_newsroom() throws IOException, InterruptedException
+	    {
+	    
+      driver.get("https://newsroom.lumio.co.in/");
+	        
+
+	        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	        act = new Actions(driver);
+	        soft = new SoftAssert();
+	        log.info("Opening browser");
+
+	        String currentUrl = driver.getCurrentUrl();
+
+	        log.info("Current URL: {}", currentUrl);
+
+	        Assert.assertTrue(
+	            currentUrl.contains("https://newsroom.lumio.co.in/"),
+	            "Expected URL to contain lumio.co.in but was: " + currentUrl
+	        );
+	        
+	        Assert.assertEquals(driver.getTitle(),"Lumio Newsroom");
+	        
+	        int statusCode = getHttpStatusCode("https://newsroom.lumio.co.in/");
+
+	        Assert.assertEquals(statusCode, 200, "Website did not return HTTP 200");
+
+	        log.info("TC_12_newsroom : PASSED");
+	    	
+	    	
+	    }
+	    
+	    
+	 
 	    
 	    
 
