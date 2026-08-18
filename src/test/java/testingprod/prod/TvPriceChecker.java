@@ -423,7 +423,7 @@ public void TC_08_comparePriceLumioStoreVision9_55_2026()
 public void tearDown(){
 	
 
-	driver.close();
+	driver.quit();
 }
 	
 	

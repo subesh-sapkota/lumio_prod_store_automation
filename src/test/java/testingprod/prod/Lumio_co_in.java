@@ -648,7 +648,7 @@ public class Lumio_co_in {
 	    public void tearDown(){
 	    	
 
-	    	driver.close();
+	    	driver.quit();
 	    }
 	
 	

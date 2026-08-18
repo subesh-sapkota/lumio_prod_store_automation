@@ -427,7 +427,7 @@ public class LumioStore {
 	    public void tearDown(){
 	    	
 
-	    	driver.close();
+	    	driver.quit();
 	    }
 	    
 	    

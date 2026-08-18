@@ -381,7 +381,7 @@ public void TC_06_comparePriceLumioStoreVision7_55()
 public void tearDown(){
 	
 
-	driver.close();
+	driver.quit();
 }
 	
 	
