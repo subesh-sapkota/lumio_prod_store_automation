@@ -27,6 +27,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
 
 public class Lumio_co_in {
 
@@ -420,90 +421,118 @@ public class Lumio_co_in {
 	    
 	    
 	    
-	     @Test(priority = 9)
-	    public void TC_09_support() throws IOException, InterruptedException {
+	   @Test(priority = 9)
+public void TC_09_support() throws IOException, InterruptedException {
 
-	        log.info("Opening Support page");
+    log.info("Opening Support page");
 
-	        driver.get("https://lumio.co.in/support");
+    driver.get("https://lumio.co.in/support");
 
-	        wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-	        act = new Actions(driver);
-	        soft = new SoftAssert();
+    wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+    act = new Actions(driver);
+    soft = new SoftAssert();
 
-	        // Wait for page completely loaded
-	        wait.until(webDriver ->
-	            "complete".equals(
-	                ((JavascriptExecutor) webDriver)
-	                    .executeScript("return document.readyState")
-	            )
-	        );
+    // Wait for page completely loaded
+    wait.until(webDriver ->
+        "complete".equals(
+            ((JavascriptExecutor) webDriver)
+                .executeScript("return document.readyState")
+        )
+    );
 
-	        String currentUrl = driver.getCurrentUrl();
+    String currentUrl = driver.getCurrentUrl();
 
-	        log.info("Current URL: {}", currentUrl);
+    log.info("Current URL: {}", currentUrl);
 
-	        Assert.assertTrue(
-	            currentUrl.contains("lumio.co.in/support"),
-	            "Expected URL to contain lumio.co.in/support but was: " + currentUrl
-	        );
+    Assert.assertTrue(
+        currentUrl.contains("lumio.co.in/support"),
+        "Expected URL to contain lumio.co.in/support but was: " + currentUrl
+    );
 
-	        // Wait for title
-	        wait.until(ExpectedConditions.titleIs("Support"));
+    // Wait for title
+    wait.until(ExpectedConditions.titleIs("Support"));
 
-	        Assert.assertEquals(
-	            driver.getTitle(),
-	            "Support",
-	            "Page title does not match"
-	        );
+    Assert.assertEquals(
+        driver.getTitle(),
+        "Support",
+        "Page title does not match"
+    );
 
-	       
-	    
-	        
-	        String url = "https://api-support-bot.dev.chouseservice.com/ask";
+    String url = "https://api-support-bot.dev.chouseservice.com/ask";
 
-	        String requestBody = """
-	                {
-	                    "question": "arc 7"
-	                }
-	                """;
+    String requestBody = """
+            {
+                "question": "arc 7"
+            }
+            """;
 
-	        HttpClient client = HttpClient.newHttpClient();
+    HttpClient client = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(30))
+            .build();
 
-	        HttpRequest request = HttpRequest.newBuilder()
-	                .uri(URI.create(url))
-	                .header("Accept", "*/*")
-	                .header("Accept-Language", "en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7")
-	                .header("Content-Type", "application/json")
-	                .header("Origin", "https://lumio.co.in")
-	                .header("Referer", "https://lumio.co.in/")
-	                .header("User-Agent",
-	                        "Mozilla/5.0 (iPad; CPU OS 18_5 like Mac OS X) "
-	                        + "AppleWebKit/605.1.15 (KHTML, like Gecko) "
-	                        + "Version/18.5 Mobile/15E148 Safari/604.1")
-	                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-	                .build();
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .timeout(Duration.ofMinutes(2)) // Maximum API wait: 2 minutes
+            .header("Accept", "*/*")
+            .header("Accept-Language",
+                    "en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7")
+            .header("Content-Type", "application/json")
+            .header("Origin", "https://lumio.co.in")
+            .header("Referer", "https://lumio.co.in/")
+            .header("User-Agent",
+                    "Mozilla/5.0 (iPad; CPU OS 18_5 like Mac OS X) "
+                    + "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                    + "Version/18.5 Mobile/15E148 Safari/604.1")
+            .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+            .build();
 
-	        HttpResponse<String> response = client.send(
-	                request,
-	                HttpResponse.BodyHandlers.ofString()
-	        );
+    try {
 
-	        System.out.println("Status Code: " + response.statusCode());
-	        System.out.println("Response:");
-	        System.out.println(response.body());
+        log.info("Calling Support API. Waiting maximum 2 minutes...");
 
-	        Assert.assertEquals(
-	                response.statusCode(),
-	                200,
-	                "API returned unexpected status code"
-	        );
-	        
-	        
+        long startTime = System.currentTimeMillis();
 
-	        log.info("TC_09_support PASSED");
-	    }
-	    
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        long responseTime = System.currentTimeMillis() - startTime;
+
+        log.info("API Response Time: {} ms", responseTime);
+        log.info("Status Code: {}", response.statusCode());
+        log.info("Response Body: {}", response.body());
+
+        // Fail if API does not return 200
+        Assert.assertEquals(
+                response.statusCode(),
+                200,
+                "API returned unexpected status code. Response: "
+                        + response.body()
+        );
+
+    } catch (HttpTimeoutException e) {
+
+        log.error("API did not respond within 2 minutes");
+
+        Assert.fail(
+                "TEST FAILED: Support API did not respond within 2 minutes (120 seconds)"
+        );
+
+    } catch (IOException e) {
+
+        log.error("API request failed: {}", e.getMessage());
+
+        Assert.fail(
+                "TEST FAILED: API request failed - " + e.getMessage()
+        );
+    }
+
+    log.info("TC_09_support PASSED");
+}
+	     
+	     
+	     
 	    @Test(priority = 10,enabled=false)
 	    public void footerCheck() {
 
