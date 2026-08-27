@@ -9,13 +9,11 @@
         <classes>
            
      
-               <class name="testingprod.prod.Lumio_co_in"/>
-                 <class name="testingprod.prod.LumioStore"/>
-                  <class name="testingprod.prod.TvPriceChecker"/>
-                  <class name="testingprod.prod.TvPriceCheckerVision7_2026"/>
-                    <class name="testingprod.prod.CheckArcPrice"/>
                   
-                  
+                    <class name="testingprod.prod.HoichoiTop10Movies"/>
+                     <class name="testingprod.prod.JioHotstar"/>
+                    
+                    
              
           
         </classes>
