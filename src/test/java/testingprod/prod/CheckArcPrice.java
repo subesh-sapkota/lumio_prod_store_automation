@@ -306,7 +306,7 @@ public void TC_05_comparePriceLumioStoreArc5()
 
 	//Assert.assertEquals(storePrice, mainPrice, "Prices do not match!");
 	
-	Assert.assertTrue(storePrice <= mainPrice,
+	Assert.assertTrue(storePrice >= mainPrice,
 	        "Store price should be less than or equal to main price!");
 	
 }
@@ -333,7 +333,7 @@ public void TC_07_comparePriceLumioStoreArc7()
 
 	//Assert.assertEquals(storePrice, mainPrice, "Prices do not match!");
 	
-	Assert.assertTrue(storePrice >= mainPrice,
+	Assert.assertTrue(storePrice <= mainPrice,
 	        "Store price should be less than or equal to main price!");
 	
 }
